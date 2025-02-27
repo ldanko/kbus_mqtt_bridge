@@ -1,0 +1,53 @@
+#!/bin/sh
+
+export RUST_LOG=kbus_mqtt_bridge=warn
+# export RUST_BACKTRACE=1
+
+export KBUS_BRIDGE_DEVICE_NAME=pfc200
+export KBUS_BRIDGE_MQTT_HOST=MQTT_HOST
+export KBUS_BRIDGE_MQTT_PORT=1883
+export KBUS_BRIDGE_MQTT_KEEPALIVE=300
+export KBUS_BRIDGE_MQTT_HEARTBEAT_INTERVAL=60
+
+run_in_loop() {
+    while true;
+    do
+        ./kbus_mqtt_bridge > /var/log/kbus_mqtt_bridge.log
+        sleep 3
+    done
+}
+
+do_start() {
+    cd /home/admin
+
+    . ./env
+
+    run_in_loop &
+    exit 0
+}
+
+do_stop() {
+    kill $(ps ax | grep "./kbus_mqtt_bridge" | head -n 1 | cut -d' ' -f1)
+}
+
+case "$1" in
+start)
+    do_start
+    ;;
+
+stop)
+    do_stop
+    ;;
+
+restart)
+    do_stop
+    do_start
+    ;;
+
+*)
+    echo "Usage: $0 {start|stop|restart}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

@@ -1,0 +1,11 @@
+# Example TOML Configuration (config.toml)
+
+# Device name used in MQTT topics
+device_name = "pfc200_controller"
+
+# MQTT broker connection settings
+[mqtt]
+broker_host = "mqtt.example.com"
+broker_port = 1883
+keepalive = "300s"  # Human-readable duration format
+heartbeat_interval = "60s"  # Human-readable duration format

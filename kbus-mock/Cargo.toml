@@ -1,0 +1,12 @@
+[package]
+name = "kbus-mock"
+version = "0.1.0"
+authors = ["Łukasz Dańko <lukasz.danko@gmail.com>"]
+license = "MIT"
+description = "Mock implementation of the kbus crate for testing"
+edition = "2024"
+rust-version = "1.85.0"
+
+[dependencies]
+bitvec = "1.0"
+thiserror = "2.0"

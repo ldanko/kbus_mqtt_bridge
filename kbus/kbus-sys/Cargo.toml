@@ -1,0 +1,13 @@
+[package]
+name = "kbus-sys"
+version = "0.1.0"
+authors = ["Łukasz Dańko <lukasz.danko@gmail.com>"]
+license = "MIT"
+description = "Low-level FFI bindings to the WAGO Device Abstraction Layer (DAL) API for accessing K-Bus functionality on WAGO PFC controllers"
+repository = "https://github.com/ldanko/kbus_mqtt_bridge"
+readme = "README.md"
+edition = "2024"
+rust-version = "1.85.0"
+
+[dependencies]
+libc = "0.2.171"
