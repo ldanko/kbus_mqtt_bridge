@@ -1,0 +1,32 @@
+[package]
+name = "kbus_mqtt_bridge"
+version = "0.1.0"
+authors = ["Łukasz Dańko <lukasz.danko@gmail.com>"]
+license = "MIT"
+description = "A bridge between WAGO PFC's K-Bus and MQTT for industrial automation systems, facilitating communication between PLC digital I/O and MQTT brokers"
+repository = "https://github.com/ldanko/kbus_mqtt_bridge"
+readme = "README.md"
+edition = "2024"
+rust-version = "1.85.0"
+
+[profile.release]
+strip = "symbols"
+
+[profile.dev]
+strip = "debuginfo" # reduces time of scp to pfc200
+
+[dependencies]
+anyhow = "1.0.97"
+bitvec = "1.0.1"
+chrono = "0.4.40"
+kbus = { version = "0.1.0", path = "kbus" }
+libc = "0.2.171"
+mac_address = "1.1.8"
+rumqttc = "0.24.0"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+sysinfo = { version = "0.34.0", default-features = false, features = ["system"] }
+tokio = { version = "1.44.1", features = ["io-util", "macros", "net", "rt", "rt-multi-thread", "sync", "time", "signal"] }
+tokio-util = "0.7.14"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"]}

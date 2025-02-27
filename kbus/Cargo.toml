@@ -1,0 +1,17 @@
+[package]
+name = "kbus"
+version = "0.1.0"
+authors = ["Łukasz Dańko <lukasz.danko@gmail.com>"]
+license = "MIT"
+description = "High-level safe Rust interface for interacting with the K-Bus on WAGO PFC devices, providing abstractions for I/O operations and bus cycle management"
+repository = "https://github.com/ldanko/kbus_mqtt_bridge"
+readme = "README.md"
+edition = "2024"
+rust-version = "1.85.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+kbus-sys = { version = "0.1.0", path = "kbus-sys" }
+libc = "0.2.171"
+thiserror = "2.0"
