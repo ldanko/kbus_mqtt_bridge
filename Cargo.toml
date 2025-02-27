@@ -1,0 +1,28 @@
+[package]
+name = "kbus_mqtt_bridge"
+version = "0.1.0"
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release]
+strip = "symbols"
+
+[profile.dev]
+strip = "debuginfo" # reduce time of scp to pfc200
+
+[dependencies]
+anyhow = "1.0.96"
+bitvec = "1.0.1"
+#ctrlc = { version = "3.4.5", feature = ["termination"] }
+kbus = { version = "0.1.0", path = "kbus" }
+libc = "0.2.169"
+mac_address = "1.1.8"
+rumqttc = "0.24.0"
+serde = "1.0.218"
+serde_derive = "1.0.218"
+serde_json = "1.0.139"
+tokio = { version = "1.43", features = [ "io-util", "macros", "net", "rt", "rt-multi-thread", "sync", "time", "signal" ] }
+tokio-util = "0.7.13"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"]}

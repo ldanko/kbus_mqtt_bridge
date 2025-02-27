@@ -1,0 +1,5 @@
+edition = "2024"
+group_imports = "StdExternalCrate"
+imports_granularity = "Crate"
+reorder_impl_items = true
+error_on_line_overflow = true
