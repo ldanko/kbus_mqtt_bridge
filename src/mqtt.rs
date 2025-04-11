@@ -256,8 +256,7 @@ async fn mqtt_heartbeat_loop(
     }
 }
 
-#[instrument(name = "mqtt", skip_all, err)]
-pub async fn mqtt_client_task(
+pub async fn mqtt_client_task_impl(
     topic_prefix: String,
     mqtt_options: MqttOptions,
     input_events: UnboundedReceiver<KBusEvent>,
@@ -296,4 +295,28 @@ pub async fn mqtt_client_task(
         .await?;
 
     Ok(())
+}
+
+#[instrument(name = "mqtt", skip_all, err)]
+pub async fn mqtt_client_task(
+    topic_prefix: String,
+    mqtt_options: MqttOptions,
+    input_events: UnboundedReceiver<KBusEvent>,
+    kbus_output: UnboundedSender<KBusEvent>,
+    heartbeat_interval: Duration,
+    cancellation_token: CancellationToken,
+) -> Result<(), anyhow::Error> {
+    let result = mqtt_client_task_impl(
+        topic_prefix,
+        mqtt_options,
+        input_events,
+        kbus_output,
+        heartbeat_interval,
+        cancellation_token.clone(),
+    )
+    .await;
+
+    cancellation_token.cancel();
+
+    result
 }
