@@ -7,7 +7,7 @@ use kbus_mqtt_bridge::{
     mqtt::mqtt_client_task,
     utils::{KBUS_MAINPRIO, SchedPolicy, configure_scheduler},
 };
-use mac_address::get_mac_address;
+use pnet::datalink;
 use rumqttc::{LastWill, MqttOptions, QoS};
 use tokio::signal;
 use tokio_util::sync::CancellationToken;
@@ -36,9 +36,11 @@ async fn app(config: Config) -> Result<(), anyhow::Error> {
 
     let cancellation_token = CancellationToken::new();
 
-    let mac = get_mac_address()
-        .context("Failed to retrieve MAC address")?
-        .ok_or_else(|| anyhow::anyhow!("No MAC address found"))?;
+    let mac = datalink::interfaces()
+        .first()
+        .context("No network interface found")?
+        .mac
+        .context("No MAC address found")?;
 
     let device_name = config.device_name.clone();
     let topic_prefix = format!("{device_name}/{mac}");
