@@ -78,8 +78,8 @@ fn heartbeat() -> serde_json::Value {
 
 const fn decode_value(payload: &[u8]) -> Option<bool> {
     match payload {
-        b"true" | b"on" | b"\x01" => Some(true),
-        b"false" | b"off" | b"\x00" => Some(false),
+        b"true" | b"on" | b"ON" | b"\x01" => Some(true),
+        b"false" | b"off" | b"OFF" | b"\x00" => Some(false),
         _ => None,
     }
 }
