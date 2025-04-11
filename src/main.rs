@@ -27,6 +27,8 @@ fn print_help() {
     println!("  KBUS_BRIDGE_DEVICE_NAME     Device name used in MQTT topics");
     println!("  KBUS_BRIDGE_MQTT_HOST       MQTT broker hostname or IP address");
     println!("  KBUS_BRIDGE_MQTT_PORT       MQTT broker port");
+    println!("  KBUS_BRIDGE_MQTT_USERNAME   MQTT username for authentication");
+    println!("  KBUS_BRIDGE_MQTT_PASSWORD   MQTT password for authentication");
     println!("  KBUS_BRIDGE_MQTT_KEEPALIVE  MQTT keepalive duration in seconds");
 }
 
@@ -57,6 +59,10 @@ async fn app(config: Config) -> Result<(), anyhow::Error> {
         qos: QoS::ExactlyOnce,
         retain: true,
     });
+
+    if let (Some(username), Some(password)) = (&config.mqtt.username, &config.mqtt.password) {
+        mqtt_options.set_credentials(username, password);
+    }
 
     let (input_tx, input_rx) = tokio::sync::mpsc::unbounded_channel();
     let (kbus_output_tx, kbus_output_rx) = tokio::sync::mpsc::unbounded_channel();

@@ -23,6 +23,14 @@ pub struct MqttConfig {
     #[serde(default = "default_mqtt_port")]
     pub broker_port: u16,
 
+    /// MQTT username for authentication (optional)
+    #[serde(default)]
+    pub username: Option<String>,
+
+    /// MQTT password for authentication (optional)
+    #[serde(default)]
+    pub password: Option<String>,
+
     /// MQTT connection keepalive duration
     #[serde(default = "default_keepalive", with = "humantime_serde")]
     pub keepalive: Duration,
@@ -67,6 +75,8 @@ impl Default for MqttConfig {
         MqttConfig {
             broker_host: "localhost".to_string(),
             broker_port: default_mqtt_port(),
+            username: None,
+            password: None,
             keepalive: default_keepalive(),
             heartbeat_interval: default_heartbeat_interval(),
         }
@@ -147,6 +157,14 @@ impl Config {
 
         if let Ok(broker_host) = env::var("KBUS_BRIDGE_MQTT_HOST") {
             config.mqtt.broker_host = broker_host;
+        }
+
+        if let Ok(username) = env::var("KBUS_BRIDGE_MQTT_USERNAME") {
+            config.mqtt.username = Some(username);
+        }
+
+        if let Ok(password) = env::var("KBUS_BRIDGE_MQTT_PASSWORD") {
+            config.mqtt.password = Some(password);
         }
 
         if let Ok(port_str) = env::var("KBUS_BRIDGE_MQTT_PORT") {

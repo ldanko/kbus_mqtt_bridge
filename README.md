@@ -76,6 +76,9 @@ device_name = "pfc200_controller"
 [mqtt]
 broker_host = "mqtt.example.com"
 broker_port = 1883
+# Optional username and password for MQTT authentication
+# username = "mqtt_user"
+# password = "secret_password"
 keepalive = "300s"  # Human-readable duration format
 heartbeat_interval = "60s"  # Human-readable duration format
 ```
@@ -89,6 +92,8 @@ You can override any configuration value using environment variables:
 | `KBUS_BRIDGE_DEVICE_NAME`             | Device name for MQTT topics                       | "kbus_mqtt_bridge" |
 | `KBUS_BRIDGE_MQTT_HOST`               | MQTT broker hostname or IP address                | "localhost"        |
 | `KBUS_BRIDGE_MQTT_PORT`               | MQTT broker port                                  | 1883               |
+| `KBUS_BRIDGE_MQTT_USERNAME`           | MQTT username for authentication (optional)       | None               |
+| `KBUS_BRIDGE_MQTT_PASSWORD`           | MQTT password for authentication (optional)       | None               |
 | `KBUS_BRIDGE_MQTT_KEEPALIVE`          | Connection keepalive in seconds                   | 300 (5 minutes)    |
 | `KBUS_BRIDGE_MQTT_HEARTBEAT_INTERVAL` | Heartbeat interval in seconds (0 to disable)      | 60 (1 minute)      |
 | `KBUS_BRIDGE_CONFIG_FILE`             | Path to config file (if not provided as argument) | None               |

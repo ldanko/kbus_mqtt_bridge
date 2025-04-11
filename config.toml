@@ -7,5 +7,8 @@ device_name = "pfc200_controller"
 [mqtt]
 broker_host = "mqtt.example.com"
 broker_port = 1883
+# Optional username and password for MQTT authentication
+# username = "mqtt_user"
+# password = "secret_password"
 keepalive = "300s"  # Human-readable duration format
 heartbeat_interval = "60s"  # Human-readable duration format

@@ -19,6 +19,8 @@ fn test_default_config() {
     assert_eq!(config.device_name, "kbus_mqtt_bridge");
     assert_eq!(config.mqtt.broker_host, "localhost");
     assert_eq!(config.mqtt.broker_port, 1883);
+    assert_eq!(config.mqtt.username, None);
+    assert_eq!(config.mqtt.password, None);
     assert_eq!(config.mqtt.keepalive, Duration::from_secs(300));
     assert_eq!(config.mqtt.heartbeat_interval, Duration::from_secs(60));
 }
@@ -34,6 +36,8 @@ fn test_from_toml() {
         [mqtt]
         broker_host = "test.mosquitto.org"
         broker_port = 8883
+        username = "test_user"
+        password = "test_password"
         keepalive = "60s"
         heartbeat_interval = "30s"
         "#;
@@ -44,6 +48,8 @@ fn test_from_toml() {
     assert_eq!(config.device_name, "test_device");
     assert_eq!(config.mqtt.broker_host, "test.mosquitto.org");
     assert_eq!(config.mqtt.broker_port, 8883);
+    assert_eq!(config.mqtt.username, Some("test_user".to_string()));
+    assert_eq!(config.mqtt.password, Some("test_password".to_string()));
     assert_eq!(config.mqtt.keepalive, Duration::from_secs(60));
     assert_eq!(config.mqtt.heartbeat_interval, Duration::from_secs(30));
 }
@@ -54,6 +60,8 @@ fn test_env_variables() {
     set_env_var("KBUS_BRIDGE_DEVICE_NAME", "env_device");
     set_env_var("KBUS_BRIDGE_MQTT_HOST", "env.mqtt.com");
     set_env_var("KBUS_BRIDGE_MQTT_PORT", "2345");
+    set_env_var("KBUS_BRIDGE_MQTT_USERNAME", "env_user");
+    set_env_var("KBUS_BRIDGE_MQTT_PASSWORD", "env_password");
     set_env_var("KBUS_BRIDGE_MQTT_KEEPALIVE", "150");
     set_env_var("KBUS_BRIDGE_MQTT_HEARTBEAT_INTERVAL", "45");
 
@@ -61,6 +69,8 @@ fn test_env_variables() {
     assert_eq!(config.device_name, "env_device");
     assert_eq!(config.mqtt.broker_host, "env.mqtt.com");
     assert_eq!(config.mqtt.broker_port, 2345);
+    assert_eq!(config.mqtt.username, Some("env_user".to_string()));
+    assert_eq!(config.mqtt.password, Some("env_password".to_string()));
     assert_eq!(config.mqtt.keepalive, Duration::from_secs(150));
     assert_eq!(config.mqtt.heartbeat_interval, Duration::from_secs(45));
 
@@ -68,6 +78,8 @@ fn test_env_variables() {
     remove_env_var("KBUS_BRIDGE_DEVICE_NAME");
     remove_env_var("KBUS_BRIDGE_MQTT_HOST");
     remove_env_var("KBUS_BRIDGE_MQTT_PORT");
+    remove_env_var("KBUS_BRIDGE_MQTT_USERNAME");
+    remove_env_var("KBUS_BRIDGE_MQTT_PASSWORD");
     remove_env_var("KBUS_BRIDGE_MQTT_KEEPALIVE");
     remove_env_var("KBUS_BRIDGE_MQTT_HEARTBEAT_INTERVAL");
 }
@@ -165,6 +177,8 @@ fn test_valid_config_validation() {
         mqtt: MqttConfig {
             broker_host: "mqtt.example.com".to_string(),
             broker_port: 1883,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(300),
             heartbeat_interval: Duration::from_secs(60),
         },
@@ -224,6 +238,8 @@ fn test_invalid_mqtt_host() {
         mqtt: MqttConfig {
             broker_host: "".to_string(),
             broker_port: 1883,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(300),
             heartbeat_interval: Duration::from_secs(60),
         },
@@ -239,6 +255,8 @@ fn test_invalid_mqtt_port() {
         mqtt: MqttConfig {
             broker_host: "mqtt.example.com".to_string(),
             broker_port: 0,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(300),
             heartbeat_interval: Duration::from_secs(60),
         },
@@ -255,6 +273,8 @@ fn test_invalid_keepalive() {
         mqtt: MqttConfig {
             broker_host: "mqtt.example.com".to_string(),
             broker_port: 1883,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(3),
             heartbeat_interval: Duration::from_secs(60),
         },
@@ -268,6 +288,8 @@ fn test_invalid_keepalive() {
         mqtt: MqttConfig {
             broker_host: "mqtt.example.com".to_string(),
             broker_port: 1883,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(100000),
             heartbeat_interval: Duration::from_secs(60),
         },
@@ -284,6 +306,8 @@ fn test_invalid_heartbeat_interval() {
         mqtt: MqttConfig {
             broker_host: "mqtt.example.com".to_string(),
             broker_port: 1883,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(300),
             heartbeat_interval: Duration::from_millis(500),
         },
@@ -297,6 +321,8 @@ fn test_invalid_heartbeat_interval() {
         mqtt: MqttConfig {
             broker_host: "mqtt.example.com".to_string(),
             broker_port: 1883,
+            username: None,
+            password: None,
             keepalive: Duration::from_secs(300),
             heartbeat_interval: Duration::from_secs(4000),
         },
